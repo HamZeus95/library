@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AuthorController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    
+th, td {
+  border: 1px solid #bfc3c8;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+table tr {
+  will-change: color;
+}
+
+table td, table th {
+  padding: 5px;
+}
+
+table th {
+  min-width: 100px;
+}
+
+table td {
+  background: inherit;
+}
+
+table tr td{
+  transition: all 1s;
+}
+
+table:has(:hover) tr td{
+  // background: blue;
+  filter: blur(1px);
+  color:gray;
+  // transition: color 1s;
+}
+
+table tr:hover td{
+  background: white;
+  filter: blur(0px);
+  color:black;
+}
+
+body {
+  background: #eff4f9;
+}
+
+.no-has-support {
+ color: red; 
+}
+
+body:has(table) .no-has-support{
+  display: none;
+}
+
+table tr:first-of-type {
+  color: black;
+  background: #f7cc7a;
+  text-align:left;
+}
+
+</style>
+
+<div class="example-wrapper">
+{% if authors %}
+<table> 
+  <tr>
+    <th>Id</th>
+    <th>author</th>
+    <th>email</th>
+    <th>details</th>
+    <th>Action</th>
+  </tr>
+{% for author in authors %}
+<tr>
+   <td>{{author.id}}</td> 
+   <td>{{ author.username | upper }}  </td>
+   <td>{{author.email}} </td> 
+   <td><a href="{{ path('auhtor_details', {'id': author.id}) }}">click ici</a></td>
+   <td><a href="{{ path('edit_author', {'id': author.id}) }}">modifier</a> || <a href="{{ path('delete_author', {'id': author.id}) }}">supprimer</a></td>
+
+</tr>
+{% endfor %}
+</table>
+{% else %} <h3> aucun auteur trouvé </h3>
+{% endif %}
+{% set authorCount = authors|length %}
+
+<h3>nombre des auteurs : {{authorCount}} </h3>
+<button><a href="{{path('add_author_by_form')}}">Ajouter Auteur </a></button> 
+
+ 
+
+</div>
+{% endblock %}

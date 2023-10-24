@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    
+th, td {
+  border: 1px solid #bfc3c8;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+table tr {
+  will-change: color;
+}
+
+table td, table th {
+  padding: 5px;
+}
+
+table th {
+  min-width: 100px;
+}
+
+table td {
+  background: inherit;
+}
+
+table tr td{
+  transition: all 1s;
+}
+
+table:has(:hover) tr td{
+  // background: blue;
+  filter: blur(1px);
+  color:gray;
+  // transition: color 1s;
+}
+
+table tr:hover td{
+  background: white;
+  filter: blur(0px);
+  color:black;
+}
+
+body {
+  background: #eff4f9;
+}
+
+.no-has-support {
+ color: red; 
+}
+
+body:has(table) .no-has-support{
+  display: none;
+}
+
+table tr:first-of-type {
+  color: black;
+  background: #f7cc7a;
+  text-align:left;
+}
+
+</style>
+
+<div class="example-wrapper"> 
+{% if books %}
+<table> 
+  <tr> 
+    <th>Title</th>
+    <th>Publication Date</th>
+    <th>Published</th>
+    <th>Category</th>
+    <th>Auteur</th>
+    <th>Action</th>
+  </tr>
+{% for book in books %} 
+{% if book.isPublished %}
+<tr> 
+   <td>{{ book.title }}  </td>
+   <td>{{book.publicationDate | date('F j, Y')}} </td> 
+   <td>{{book.isPublished ? 'true' : 'false' }} </td> 
+   <td>{{book.category}} </td> 
+   <td>{{book.author.username}} </td>  
+   <td><a href="{{ path('edit_book', {'ref': book.ref}) }}">modifier</a> || <br/>
+   <a href="{{ path('delete_book', {'ref': book.ref}) }}">supprimer</a>  || <br/>
+   <a href="{{path('book_details', {'ref': book.ref})}}">show</a>
+   </td>
+   
+
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+{% else %} <h3>No Book Found<h3> 
+{% endif %}
+ 
+
+{% set publishedCount = 0 %}
+{% set unpublishedCount = 0 %}
+
+{% for book in books %}
+    {% if book.isPublished %}
+        {% set publishedCount = publishedCount + 1 %}
+    {% else %}
+        {% set unpublishedCount = unpublishedCount + 1 %}
+    {% endif %}
+{% endfor %}
+
+Number of published books: {{ publishedCount }}<br/>
+Number of unpublished books: {{ unpublishedCount }}<br/>
+ 
+<button><a href="{{path('create_book')}}">Ajouter book </a></button> 
+
+ 
+
+</div>
+{% endblock %}
